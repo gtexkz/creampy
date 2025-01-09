@@ -32,7 +32,6 @@ def download_media(tag=None, limit=5, urls=None, exclusions=None):
                 soup = BeautifulSoup(response.content, 'html.parser')
                 media_url = None
 
-                # Попытка найти изображения и видео
                 img_tag = soup.find('img', {'id': 'image'})
                 video_tag = soup.find('source')
 
@@ -42,7 +41,6 @@ def download_media(tag=None, limit=5, urls=None, exclusions=None):
                     media_url = video_tag['src']
 
                 if media_url:
-                    # Корректное извлечение имени файла
                     file_name = media_url.split('?')[0].split('/')[-1]
                     file_path = os.path.join('downloads', file_name)
                     file_data = requests.get(media_url, headers=headers, cookies=cookies).content
@@ -106,32 +104,28 @@ def on_submit():
             return
         download_media(urls=urls, exclusions=exclusions)
 
-# Создание интерфейса
 root = tk.Tk()
 root.title("Скачивание медиа с Rule34")
 
 choice_var = tk.StringVar(value="1")
 
-# Выбор между тегом и ссылками
 tk.Radiobutton(root, text="По тегу", variable=choice_var, value="1").pack(anchor="w")
 tk.Radiobutton(root, text="По ссылке", variable=choice_var, value="2").pack(anchor="w")
 
-# Поле для ввода тегов или ссылок
 tk.Label(root, text="Введите теги (через запятую) или ссылки (через запятую):").pack()
 tag_entry = tk.Entry(root, width=50)
 tag_entry.pack()
 
-# Поле для ввода исключений (теги или ссылки для исключения)
 tk.Label(root, text="Введите теги или ссылки для исключения (через запятую):").pack()
 exclusion_entry = tk.Entry(root, width=50)
 exclusion_entry.pack()
 
-# Поле для ввода лимита
+
 tk.Label(root, text="Сколько файлов скачать?").pack()
 limit_entry = tk.Entry(root)
 limit_entry.pack()
 
-# Кнопка отправки
+
 submit_button = tk.Button(root, text="Скачать", command=on_submit)
 submit_button.pack()
 
